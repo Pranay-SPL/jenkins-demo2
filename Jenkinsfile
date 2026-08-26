@@ -1,44 +1,46 @@
 pipeline {
     agent any
 
+    environment {
+        APP_NAME = 'Jenkins Learning'
+        APP_VERSION = '1.0'
+        OWNER = 'Pranay'
+    }
+
     stages {
 
-        stage('Jenkins Details') {
+        stage('Application Details') {
             steps {
                 bat """
                 echo ==========================
-                echo Jenkins Job Information
+                echo App Name : %APP_NAME%
+                echo Version : %APP_VERSION%
+                echo Owner : %OWNER%
                 echo ==========================
 
-                echo Job Name      : %JOB_NAME%
-                echo Build Number  : %BUILD_NUMBER%
-                echo Build ID      : %BUILD_ID%
-                echo Workspace     : %WORKSPACE%
+                """
+            }
+        }
 
+        stage('Jenkins Details') {
+            steps {
+                bat"""
+                echo ==========================
+                echo Job     : %JOB_NAME%
+                echo Build  : %BUILD_NUMBER%
+                echo Workspace     : %WORKSPACE%
                 echo ==========================
                 """
             }
         }
 
-        stage('Build') {
+        stage('Run Batch File') {
             steps {
-                echo 'Building the application...'
                 bat 'hello.bat'
             }
         }
 
-        stage('Test') {
-            steps {
-                echo 'Running tests...'
-                bat 'echo Tests completed successfully'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Deploying the application...'
-                bat 'echo Deployment completed successfully'
-            }
-        }
+        
+        
     }
 }
