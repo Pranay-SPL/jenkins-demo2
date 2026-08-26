@@ -1,42 +1,47 @@
 pipeline {
     agent any
 
-    environment {
-        APP_NAME = 'Jenkins Learning'
-        APP_VERSION = '1.0'
-        OWNER = 'Pranay'
+    parametres {
+        string(
+            name: 'APP_NAME',
+            defaultValue: 'Jenkins Demo',
+            description: 'Enter Application Name'
+        )
+        choice(
+            name : 'ENVIRONMENT',
+            choices: ['Development', 'Testing', 'Production'],
+            description: 'Select Environment'
+        )
+        booleanParam(
+            name: 'RUN_TESTS',
+            defaultValue: true,
+            description: 'Run Tests?'
+        )
     }
+    
 
     stages {
 
-        stage('Application Details') {
+        stage('Display Parameters') {
             steps {
-                bat """
-                echo ==========================
-                echo App Name : %APP_NAME%
-                echo Version : %APP_VERSION%
-                echo Owner : %OWNER%
-                echo ==========================
-
-                """
+                echo "Application : ${params.APP_NAME}"
+                echo "Environment : ${params.ENVIRONMENT}"
+                echo "Run Tests   : ${param.RUN_TESTS}"
             }
         }
 
-        stage('Jenkins Details') {
+        stage('Build') {
             steps {
-                bat"""
-                echo ==========================
-                echo Job     : %JOB_NAME%
-                echo Build  : %BUILD_NUMBER%
-                echo Workspace     : %WORKSPACE%
-                echo ==========================
-                """
+                
+                echo "Running tests..."
+                bat 'echo Tests completed successfully'
             }
         }
 
-        stage('Run Batch File') {
+        stage('Deploy') {
             steps {
-                bat 'hello.bat'
+                echo "Deploying ${params.APP_NAME} to ${params.ENVIRONMENT}..."
+                bat 'echo Deployment completed successfully'
             }
         }
 
