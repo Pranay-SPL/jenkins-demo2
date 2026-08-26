@@ -3,6 +3,23 @@ pipeline {
 
     stages {
 
+        stage('Jenkins Details') {
+            steps {
+                bat """
+                echo ==========================
+                echo Jenkins Job Information
+                echo ==========================
+
+                echo Job Name      : %JOB_NAME%
+                echo Build Number  : %BUILD_NUMBER%
+                echo Build ID      : %BUILD_ID%
+                echo Workspace     : %WORKSPACE%
+
+                echo ==========================
+                """
+            }
+        }
+
         stage('Build') {
             steps {
                 echo 'Building the application...'
@@ -23,6 +40,5 @@ pipeline {
                 bat 'echo Deployment completed successfully'
             }
         }
-
     }
 }
