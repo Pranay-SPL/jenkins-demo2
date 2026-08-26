@@ -1,7 +1,7 @@
 @echo off
 
 echo ==========================
-echo Hello from Jenkins Demo
+echo Hello from Jenkins Demo - Version 2
 echo ==========================
 echo.
 echo Jenkins successfully downloaded this file from GitHub!
