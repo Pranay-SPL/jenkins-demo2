@@ -70,7 +70,7 @@ pipeline {
                 bat 'echo Deployment completed successfully'
             }
         }
-    }
+    
 
     stage('Credentials Test') {
         steps {
@@ -87,6 +87,7 @@ pipeline {
                 '''
             }
         }
+    }
     }
 
     post{
