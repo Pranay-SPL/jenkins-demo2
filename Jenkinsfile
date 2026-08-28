@@ -42,7 +42,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Building ${params.APP_NAME}..."
-                bat 'echo Build completed successfully'
+                bat 'this-command-does-not-exist'
             }
         }
 
