@@ -60,10 +60,30 @@ pipeline {
         }
 
         stage('Deploy') {
+            when {
+                expression { 
+                    params.ENVIRONMENT != 'Production'
+                }
+            }
             steps {
                 echo "Deploying ${params.APP_NAME} to ${params.ENVIRONMENT}..."
                 bat 'echo Deployment completed successfully'
             }
         }
     }
+
+    post{
+        always {
+            echo 'Pipeline execution completed'
+        }
+
+        success {
+            echo 'Pipeline completed Successfully!'
+        }
+        failure{
+            echo 'Pipeline Failed!'
+        }
+    }
+
+
 }
