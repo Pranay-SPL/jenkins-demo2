@@ -3,10 +3,10 @@ pipeline {
 
     parameters {
         choice(
-    name: 'APP_NAME',
-    choices: ['Banking Application', 'Shopping Application', 'Jenkins Demo'],
-    description: 'Select Application'
-)
+            name: 'APP_NAME',
+            choices: ['Banking Application', 'Shopping Application', 'Jenkins Demo'],
+            description: 'Select Application'
+        )
 
         choice(
             name: 'ENVIRONMENT',
