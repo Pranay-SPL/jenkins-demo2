@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     parameters {
-        choice(
+        string(
             name: 'APP_NAME',
-            choices: ['Banking Application', 'Shopping Application', 'Jenkins Demo'],
-            description: 'Select Application'
+            defaultValue: 'Jenkins Demo',
+            description: 'Enter Application Name'
         )
 
         choice(
@@ -46,6 +46,16 @@ pipeline {
             }
         }
 
+        stage('Create Artifact') {
+            steps {
+                bat '''
+                    echo Application: %APP_NAME% > build-info.txt
+                    echo Environment: %ENVIRONMENT% >> build-info.txt
+                    echo Build Number: %BUILD_NUMBER% >> build-info.txt
+                '''
+            }
+        }
+
         stage('Test') {
             when {
                 expression {
@@ -59,51 +69,51 @@ pipeline {
             }
         }
 
+        stage('Credentials Test') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'demo-credential',
+                        usernameVariable: 'DEMO_USER',
+                        passwordVariable: 'DEMO_PASSWORD'
+                    )
+                ]) {
+                    bat '''
+                        echo Username: %DEMO_USER%
+                        echo Credential has been loaded successfully
+                    '''
+                }
+            }
+        }
+
         stage('Deploy') {
             when {
-                expression { 
+                expression {
                     params.ENVIRONMENT != 'Production'
                 }
             }
+
             steps {
                 echo "Deploying ${params.APP_NAME} to ${params.ENVIRONMENT}..."
                 bat 'echo Deployment completed successfully'
             }
         }
-    
-
-    stage('Credentials Test') {
-        steps {
-            withCredentials([
-                usernamePassword(
-                    credentialsId: 'demo-credential',
-                    usernameVariable: 'DEMO_USER',
-                    passwordVariable: 'DEMO_PASSWORD'
-                )
-            ]) {
-                bat '''
-                    echo Username: %DEMO_USER%
-                    echo Password: %DEMO_PASSWORD%
-                '''
-            }
-        }
-    }
     }
 
-    post{
-        always {
-            echo 'Pipeline execution completed'
-        }
+    post {
 
         success {
-            echo 'Pipeline completed Successfully!'
+            archiveArtifacts artifacts: 'build-info.txt', fingerprint: true
+            echo 'Artifact archived successfully.'
+            echo 'Pipeline completed successfully!'
         }
-        failure{
-            echo 'Pipeline Failed!'
+
+        always {
+            echo 'Pipeline execution completed.'
+        }
+
+        failure {
+            echo 'Pipeline failed!'
         }
     }
-
-    
-
-
 }
