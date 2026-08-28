@@ -2,11 +2,11 @@ pipeline {
     agent any
 
     parameters {
-        string(
-            name: 'APP_NAME',
-            defaultValue: 'Jenkins Demo',
-            description: 'Enter Application Name'
-        )
+        choice(
+    name: 'APP_NAME',
+    choices: ['Banking Application', 'Shopping Application', 'Jenkins Demo'],
+    description: 'Select Application'
+)
 
         choice(
             name: 'ENVIRONMENT',
