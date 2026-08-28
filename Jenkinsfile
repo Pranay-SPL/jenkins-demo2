@@ -72,6 +72,23 @@ pipeline {
         }
     }
 
+    stage('Credentials Test') {
+        steps {
+            withCredentials([
+                usernamePassword(
+                    credentialsId: 'demo-credential',
+                    usernameVariable: 'DEMO_USER',
+                    passwordVariable: 'DEMO_PASSWORD'
+                )
+            ]) {
+                bat '''
+                    echo Username: %DEMO_USER%
+                    echo Password: %DEMO_PASSWORD%
+                '''
+            }
+        }
+    }
+
     post{
         always {
             echo 'Pipeline execution completed'
@@ -84,6 +101,8 @@ pipeline {
             echo 'Pipeline Failed!'
         }
     }
+
+    
 
 
 }
