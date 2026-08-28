@@ -1,24 +1,25 @@
 pipeline {
     agent any
 
-    parametres {
+    parameters {
         string(
             name: 'APP_NAME',
             defaultValue: 'Jenkins Demo',
             description: 'Enter Application Name'
         )
+
         choice(
-            name : 'ENVIRONMENT',
+            name: 'ENVIRONMENT',
             choices: ['Development', 'Testing', 'Production'],
             description: 'Select Environment'
         )
+
         booleanParam(
             name: 'RUN_TESTS',
             defaultValue: true,
             description: 'Run Tests?'
         )
     }
-    
 
     stages {
 
